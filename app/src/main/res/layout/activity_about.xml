@@ -35,7 +35,7 @@
                 android:id="@+id/textAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Personal Restaurant Guide\n\nGroup Members:\n- Yousuf Salihi\n- (Add others)\n\nCourse: COMP 3074\nCollege: George Brown College\n\nThis app lets users save restaurant information, view details, and navigate to a placeholder map screen for future Google Maps integration."
+                android:text="Personal Restaurant Guide\n\nGroup Members:\n- Yousuf Salihi\n- Bryan Paul Yabut\n- Patrick Sherwin Millares\n\nCourse: COMP 3074\nCollege: George Brown College\n\nThis app lets users save restaurant information, view details, and navigate to a placeholder map screen for future Google Maps integration."
                 android:textSize="16sp"
                 android:padding="8dp" />
         </LinearLayout>
