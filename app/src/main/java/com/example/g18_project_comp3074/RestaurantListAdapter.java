@@ -13,6 +13,6 @@ import java.util.ArrayList;
 public class RestaurantListAdapter extends ArrayAdapter<String> {
 
     public RestaurantListAdapter(Context context, ArrayList<String> list) {
-        super(context, android.R.layout.simple_list_item_1, list);
+        super(context, R.layout.item_simple_restaurant, list);
     }
 }
