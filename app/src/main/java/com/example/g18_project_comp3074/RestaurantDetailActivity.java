@@ -1,5 +1,6 @@
 package com.example.g18_project_comp3074;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,14 +8,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private TextView textName, textAddress, textPhone, textNotes, textTags;
-    private Button btnViewMap, btnDirections, btnShare, btnEdit, btnReturnHome;
+    private Button btnViewMap, btnDirections, btnShare, btnEdit, btnReturnHome, btnDelete;
     private Restaurant restaurant;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +38,11 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         btnShare = findViewById(R.id.btnShareEmail);
         btnEdit = findViewById(R.id.btnEditDetails);
         btnReturnHome = findViewById(R.id.btnReturnHome);
+        btnDelete = findViewById(R.id.btnDelete);
 
         if (getIntent() != null && getIntent().hasExtra("restaurant")) {
             restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
+
             if (restaurant != null) {
                 textName.setText("Name: " + restaurant.getName());
                 textAddress.setText("Address: " + restaurant.getAddress());
@@ -91,6 +96,35 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         });
-    }
-}
 
+        btnDelete.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Restaurant")
+                    .setMessage("Are you sure you want to delete this restaurant?")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        deleteRestaurant();
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        });
+    }
+
+    private void deleteRestaurant() {
+        if (restaurant != null) {
+            DBHelper db = new DBHelper(this);
+
+            boolean success = db.deleteRestaurant(restaurant.getId());
+
+            if (success) {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        } else {
+            Toast.makeText(this, "Error: Could not find restaurant to delete.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+}

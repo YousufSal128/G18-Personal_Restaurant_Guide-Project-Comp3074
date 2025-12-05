@@ -111,13 +111,25 @@
         android:layout_marginTop="8dp" />
 
     <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Delete Restaurant"
+        app:layout_constraintTop_toBottomOf="@id/btnEditDetails"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
         android:id="@+id/btnReturnHome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="Return to Home"
-        app:layout_constraintTop_toBottomOf="@id/btnEditDetails"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnEditDetails" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

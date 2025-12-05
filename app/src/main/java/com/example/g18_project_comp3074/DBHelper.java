@@ -110,4 +110,18 @@ class DBHelper extends SQLiteOpenHelper {
         String[] args = new String[]{"%" + dbName + "%"};
         return db.rawQuery(query, args);
     }
+
+    public boolean deleteRestaurant(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        db.close();
+
+        if (result == 0) {
+            Toast.makeText(context, "Failed to delete restaurant.", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            Toast.makeText(context, "Restaurant deleted successfully.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    }
 }
