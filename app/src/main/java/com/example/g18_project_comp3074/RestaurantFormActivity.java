@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class RestaurantFormActivity extends AppCompatActivity {
 
     private EditText editName, editAddress, editPhone, editNotes, editTags;
+    private RatingBar ratingBarInput;
     private Button btnSaveRestaurant;
     private Restaurant restaurantToEdit;
 
@@ -35,6 +37,7 @@ public class RestaurantFormActivity extends AppCompatActivity {
         editPhone = findViewById(R.id.editPhone);
         editNotes = findViewById(R.id.editNotes);
         editTags = findViewById(R.id.editTags);
+        ratingBarInput = findViewById(R.id.ratingBarInput);
         btnSaveRestaurant = findViewById(R.id.btnSaveRestaurant);
 
         dbHelper = new DBHelper(this);
@@ -48,6 +51,7 @@ public class RestaurantFormActivity extends AppCompatActivity {
                 editPhone.setText(restaurantToEdit.getPhone());
                 editNotes.setText(restaurantToEdit.getNotes());
                 editTags.setText(restaurantToEdit.getTags());
+                ratingBarInput.setRating(restaurantToEdit.getRating());
             }
         }
 
@@ -57,6 +61,7 @@ public class RestaurantFormActivity extends AppCompatActivity {
             String phone = editPhone.getText().toString().trim();
             String notes = editNotes.getText().toString().trim();
             String tags = editTags.getText().toString().trim();
+            float rating = ratingBarInput.getRating();
 
             double latitude = 0.0;
             double longitude = 0.0;
@@ -81,17 +86,18 @@ public class RestaurantFormActivity extends AppCompatActivity {
                         tags,
                         address,
                         latitude,
-                        longitude
+                        longitude,
+                        rating
                 );
             } else {
-                dbHelper.addRestaurant(name, phone, notes, tags, address, latitude, longitude);
+                dbHelper.addRestaurant(name, phone, tags, notes, address, latitude, longitude, rating);
             }
 
             Restaurant restaurant;
             if (restaurantToEdit != null) {
-                restaurant = new Restaurant(restaurantToEdit.getId(), name, address, phone, notes, tags);
+                restaurant = new Restaurant(restaurantToEdit.getId(), name, address, phone, notes, tags, rating);
             } else {
-                restaurant = new Restaurant(name, address, phone, notes, tags);
+                restaurant = new Restaurant(name, address, phone, notes, tags, rating);
             }
 
             Intent i = new Intent(RestaurantFormActivity.this, RestaurantDetailActivity.class);

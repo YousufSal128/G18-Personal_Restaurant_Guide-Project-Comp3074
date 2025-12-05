@@ -1,7 +1,5 @@
 package com.example.g18_project_comp3074;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -56,18 +54,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listRestaurants.setOnItemClickListener((parent, view, position, id) -> {
-           Restaurant selectedRestaurant = restaurantObjects.get(position);
-           Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
-           intent.putExtra("restaurant", selectedRestaurant);
-           startActivity(intent);
+            Restaurant selectedRestaurant = restaurantObjects.get(position);
+            Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
+            intent.putExtra("restaurant", selectedRestaurant);
+            startActivity(intent);
         });
-
-//        btnSearch.setOnClickListener(v -> {
-//            String query = editSearch.getText().toString().trim();
-//            Intent i = new Intent(MainActivity.this, SearchResultsActivity.class);
-//            i.putExtra("query", query);
-//            startActivity(i);
-//        });
     }
 
     @Override
@@ -99,14 +90,14 @@ public class MainActivity extends AppCompatActivity {
                 String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone"));
                 String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
                 String tags = cursor.getString(cursor.getColumnIndexOrThrow("tags"));
+                float rating = cursor.getFloat(cursor.getColumnIndexOrThrow("rating"));
 
-                Restaurant restaurant = new Restaurant(id, name, address, phone, notes, tags);
+                Restaurant restaurant = new Restaurant(id, name, address, phone, notes, tags, rating);
                 restaurantObjects.add(restaurant);
                 restaurantNames.add(name);
-            }while(cursor.moveToNext());
+            } while(cursor.moveToNext());
         }
         adapter.notifyDataSetChanged();
         cursor.close();
     }
 }
-

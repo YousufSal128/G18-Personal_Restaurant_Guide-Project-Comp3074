@@ -13,7 +13,7 @@ class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     public static final String DBName = "G18_Project_COMP3074.db";
-    public static final int version = 1;
+    public static final int version = 2;
 
     public static final String TABLE_NAME = "Restaurants";
     public static final String COLUMN_ID = "_id";
@@ -30,7 +30,7 @@ class DBHelper extends SQLiteOpenHelper {
 
     public DBHelper(@Nullable Context context) {
         super(context, DBName, factory, version);
-        this.context = context; // assign context
+        this.context = context;
     }
 
     @Override
@@ -39,7 +39,7 @@ class DBHelper extends SQLiteOpenHelper {
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_PHONE + " TEXT, " +
-                COLUMN_RATING + " REAL, " +
+                COLUMN_RATING + " REAL, " + // Added Rating
                 COLUMN_TAGS + " TEXT, " +
                 COLUMN_NOTES + " TEXT, " +
                 COLUMN_ADDRESS + " TEXT, " +
@@ -55,7 +55,7 @@ class DBHelper extends SQLiteOpenHelper {
     }
 
     void addRestaurant(String name, String phone, String tags, String notes,
-                       String address, double latitude, double longitude) {
+                       String address, double latitude, double longitude, float rating) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -67,6 +67,7 @@ class DBHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_ADDRESS, address);
         cv.put(COLUMN_LATITUDE, latitude);
         cv.put(COLUMN_LONGITUDE, longitude);
+        cv.put(COLUMN_RATING, rating); // Save rating
 
         long result = db.insert(TABLE_NAME, null, cv);
         if (result == -1) {
@@ -79,13 +80,13 @@ class DBHelper extends SQLiteOpenHelper {
     }
 
     public boolean updateRestaurant(int id, String name, String phone, String notes,
-                                    String tags, String address, double latitude, double longitude) {
+                                    String tags, String address, double latitude, double longitude, float rating) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, name);
         cv.put(COLUMN_PHONE, phone);
-        cv.put(COLUMN_RATING, 0.0);
+        cv.put(COLUMN_RATING, rating); // Update rating
         cv.put(COLUMN_TAGS, tags);
         cv.put(COLUMN_ADDRESS, address);
         cv.put(COLUMN_LATITUDE, latitude);
@@ -97,17 +98,16 @@ class DBHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-
     public Cursor getAllRestaurants() {
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery(query, null);
     }
 
-    public Cursor searchRestaurantsByName(String dbName) {
+    public Cursor searchRestaurantsByName(String queryStr) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " LIKE ?";
-        String[] args = new String[]{"%" + dbName + "%"};
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_NAME + " LIKE ? OR " + COLUMN_TAGS + " LIKE ?";
+        String[] args = new String[]{"%" + queryStr + "%", "%" + queryStr + "%"};
         return db.rawQuery(query, args);
     }
 

@@ -54,6 +54,17 @@
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
+                    <RatingBar
+                        android:id="@+id/ratingBarDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:isIndicator="true"
+                        android:layout_marginTop="8dp"
+                        android:progressTint="@color/premium_gold"
+                        style="?android:attr/ratingBarStyleSmall"/>
+
                     <TextView
                         android:id="@+id/textDetailTags"
                         android:layout_width="match_parent"
@@ -61,7 +72,7 @@
                         android:text="Tags"
                         android:textColor="@color/premium_gold"
                         android:textStyle="italic"
-                        android:layout_marginTop="4dp"/>
+                        android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

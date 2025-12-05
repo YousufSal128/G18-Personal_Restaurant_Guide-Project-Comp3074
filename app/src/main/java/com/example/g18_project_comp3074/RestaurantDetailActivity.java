@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +16,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private TextView textName, textAddress, textPhone, textNotes, textTags;
+    private RatingBar ratingBarDetail; // RatingBar
     private Button btnViewMap, btnDirections, btnShare, btnEdit, btnReturnHome, btnDelete;
     private Restaurant restaurant;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         textPhone = findViewById(R.id.textDetailPhone);
         textNotes = findViewById(R.id.textDetailNotes);
         textTags = findViewById(R.id.textDetailTags);
+        ratingBarDetail = findViewById(R.id.ratingBarDetail);
 
         btnViewMap = findViewById(R.id.btnViewMap);
         btnDirections = findViewById(R.id.btnDirections);
@@ -44,11 +46,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
 
             if (restaurant != null) {
-                textName.setText("Name: " + restaurant.getName());
+                textName.setText(restaurant.getName());
                 textAddress.setText("Address: " + restaurant.getAddress());
                 textPhone.setText("Phone: " + restaurant.getPhone());
                 textNotes.setText("Notes: " + restaurant.getNotes());
                 textTags.setText("Tags: " + restaurant.getTags());
+                ratingBarDetail.setRating(restaurant.getRating());
             }
         }
 
@@ -77,6 +80,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 String body = "Name: " + restaurant.getName() + "\n"
                         + "Address: " + restaurant.getAddress() + "\n"
                         + "Phone: " + restaurant.getPhone() + "\n"
+                        + "Rating: " + restaurant.getRating() + "/5.0\n"
                         + "Tags: " + restaurant.getTags() + "\n\n"
                         + "Notes: " + restaurant.getNotes();
                 emailIntent.putExtra(Intent.EXTRA_TEXT, body);
@@ -113,7 +117,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void deleteRestaurant() {
         if (restaurant != null) {
             DBHelper db = new DBHelper(this);
-
             boolean success = db.deleteRestaurant(restaurant.getId());
 
             if (success) {
@@ -126,5 +129,4 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Error: Could not find restaurant to delete.", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
