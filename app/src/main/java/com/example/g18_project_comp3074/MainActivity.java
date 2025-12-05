@@ -94,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Restaurant restaurant = new Restaurant(id, name, address, phone, notes, tags, rating);
                 restaurantObjects.add(restaurant);
-                restaurantNames.add(name);
+
+                String listDisplay = name + "   ★ " + rating;
+                restaurantNames.add(listDisplay);
+
             } while(cursor.moveToNext());
         }
         adapter.notifyDataSetChanged();
